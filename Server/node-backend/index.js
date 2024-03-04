@@ -2,9 +2,11 @@ const express = require ("express");
 const mongoose = require("mongoose");
 const signinMiddleWere = require("./middlewere/signin");
 const loginMiddleWere = require("./middlewere/login");
+const cors=require('cors');
 require('dotenv').config();
 const app=express();
 app.use(express.json());
+app.use(cors());
 
 
 mongoose.connect(process.env.MONGO_CONNECT_LINK);
@@ -15,7 +17,7 @@ const loginSchema=mongoose.Schema({
 
 });
 const loginModel=mongoose.model("Users",loginSchema);
-app.post("/signin",signinMiddleWere,async (req,res)=>{
+app.post("/signin",async (req,res)=>{
     const Useremail=req.body.Useremail;
     const Username=req.body.Username;
     const Password=req.body.Password;
@@ -26,7 +28,7 @@ app.post("/signin",signinMiddleWere,async (req,res)=>{
     PassWord:Password,
     });
     await userLogin.save()
-        res.json({
+        res.status(200).json({
             msg: "user created"
         });
     
