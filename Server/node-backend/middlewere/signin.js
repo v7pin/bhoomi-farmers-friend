@@ -6,13 +6,6 @@ const userSchema= zod.string();
 
 
 
-
-
-
-
-
-
-
 function signinMiddleWere(req,res,next){
 console.log('reached signin');
  const user= req.body;

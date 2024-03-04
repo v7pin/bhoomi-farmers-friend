@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
+import sys
 
 # Read Data
 df = pd.read_csv('Crop_recommendation.csv')
@@ -16,7 +17,7 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, stratify=y, random_sta
 
 # Logistic Regression
 from sklearn.linear_model import LogisticRegression
-model = LogisticRegression()
+model = LogisticRegression(max_iter=1000)
 model.fit(x_train, y_train)
 y_pred = model.predict(x_test)
 
@@ -45,20 +46,20 @@ naive_bayes_acc = accuracy_score(y_test, y_pred_3)
 # Random Forest
 from sklearn.ensemble import RandomForestClassifier
 model_4 = RandomForestClassifier(n_estimators=25, random_state=2)
-model_4.fit(x_train.values, y_train.values)
+model_4.fit(x_train, y_train)
 y_pred_4 = model_4.predict(x_test)
 
 # Accuracy
 random_fore_acc = accuracy_score(y_test, y_pred_4)
 
 # Our Data
-sample_data = [[90, 42, 43, 20.879744, 82.002744, 6.502985, 202.935536]]
-sample_df = pd.DataFrame(sample_data, columns=x.columns)
+if len(sys.argv) == 8:  # Check if 7 command-line arguments are provided
+    arr = [float(arg) for arg in sys.argv[1:]]  # Extract values starting from index 1
+    input_data = [arr]
+    acc = model_4.predict(input_data)
+    print(acc)
+else:
+    print("Error: Please provide 7 command-line arguments.")
 
-# Predict using the trained model
-acc = model_4.predict(sample_df)
-print(acc)
-
-# Save the model
 with open('mlmodel.pkl', 'wb') as f:
     pickle.dump(model_4, f)
