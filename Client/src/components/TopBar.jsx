@@ -15,7 +15,7 @@ const TopBar = () => {
   };
 
   return (
-    <div className="bg-white h-24 flex items-center justify-between shadow-md px-6 backdrop-blur-md bg-opacity-30">
+    <div className="bg-white h-14 flex items-center justify-between shadow-md px-6 backdrop-blur-md bg-opacity-30">
       <div className="flex items-center space-x-4 h-16">
         <img
           src={user.photoUrl}
@@ -30,11 +30,11 @@ const TopBar = () => {
 
       <div className="flex items-center space-x-4 relative">
         <button>
-          <FiBell className="text-xl text-gray-600" size={30}/>
+          <FiBell className="text-xl text-gray-600" size={22}/>
         </button>
 
         <button onClick={() => setShowUserMenu(!showUserMenu)} className="relative">
-          <FiUser className="text-xl text-gray-600 cursor-pointer"  size={30}/>
+          <FiUser className="text-xl text-gray-600 cursor-pointer"  size={22}/>
 
           {showUserMenu && (
             <div className="absolute top-full right-0 mt-2 bg-white bg-opacity-95 border border-gray-300 rounded-md shadow-md p-2">
