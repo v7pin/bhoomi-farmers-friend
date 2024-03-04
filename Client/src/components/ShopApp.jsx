@@ -28,6 +28,24 @@ const products = [
         image: 'https://via.placeholder.com/200', // Replace with the actual image URL
         category: 'Nutrient Sensors',
       },
+      {
+        id: 3,
+        name: '7 in 1 Sensor',
+        price: 12000.00,
+        originalPrice: 24.99,
+        sensorType: 'Nutrient Detection Probe',
+        image: '7in1.png', // Replace with the actual image URL
+        category: 'Nutrient Sensors',
+      },
+      {
+        id: 4,
+        name: 'NPK Sensor',
+        price: 12000.00,
+        originalPrice: 24.99,
+        sensorType: 'Nutrient Detection Probe',
+        image: 'npk.png', // Replace with the actual image URL
+        category: 'Nutrient Sensors',
+      },
 ];
 
 const ShopApp = () => {
@@ -74,14 +92,23 @@ const ShopApp = () => {
   });
 
   return (
-    <animated.div style={fadeIn} className="bg-gray-100 min-h-screen p-4">
-      <header className="bg-white py-4 px-6 shadow-md flex justify-between items-center mb-4">
-        <animated.h1 style={zoomIn} className="text-xl font-bold text-green-500">
-          Bhoomi
+    <animated.div style={fadeIn} className="bg-gray-100 min-h-screen ">
+      <header className="bg-white px-2 py-2 shadow-md flex justify-between items-center mb-4">
+        <div className='flex flex-row'>
+      <img src="logobhoomi.png" alt="" className='h-14 ml-3' />
+        <animated.h1 style={zoomIn} className="text-xl font-bold text-green-500 ml-6 mt-3">
+          BhoomiKart
         </animated.h1>
-       
+        </div>
+       <div className='float-right'>
         <div className="flex items-center">
-          <button className="bg-green-500 text-white py-2 px-4 rounded-md mr-4" onClick={handleOpenCart}>
+        <a
+            href="/dashboard"
+            className="bg-blue-500 text-white py-2 px-4 rounded-md mr-4 font-bold hover:scale-110 duration-300 "
+          >
+            Go Back to Dashboard
+          </a> 
+          <button className="bg-green-500 text-white py-2  px-4 rounded-md mr-4" onClick={handleOpenCart}>
             View Cart
           </button>
           <input
@@ -90,7 +117,10 @@ const ShopApp = () => {
             value={searchText}
             onChange={(e) => handleSearchChange(e.target.value)}
           />
+          
         </div>
+        </div>
+
       </header>
       <main className="container mx-auto px-4 pb-8">
         <div className="flex flex-wrap mb-4">
@@ -108,8 +138,8 @@ const ShopApp = () => {
         </div>
         <div className="h-64 relative overflow-hidden mb-8">
           <img
-            className="w-full h-full object-cover absolute top-0 left-0 z-10"
-            src="https://via.placeholder.com/1440x400"
+            className="w-full h-full object- absolute top-0 left-0 z-10"
+            src="bkbanner.png"
             alt="Banner Image"
           />
           <div className="absolute top-0 right-0 z-20 flex items-center py-4 px-6 space-x-4">
@@ -127,7 +157,7 @@ const ShopApp = () => {
             )
             .map((product) => (
               <animated.div key={product.id} style={popIn} className="bg-white rounded-lg shadow-md overflow-hidden p-4">
-                <img className="w-full h-48 object-cover mb-4" src={product.image} alt={product.name} />
+                <img className="w-full h-48 object-fill mb-4" src={product.image} alt={product.name} />
                 <div>
                   <h3 className="text-lg font-medium mb-2">{product.name}</h3>
                   <p className="text-gray-600 mb-2">₹{product.price}</p>

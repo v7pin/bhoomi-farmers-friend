@@ -4,6 +4,7 @@ import React from "react";
 import SideBar from "./SideBar.jsx";
 import TopBar from "./TopBar";
 import SmartGarden from "./Smartgarden.jsx";
+import Chatbot2 from "./Chatbot2.jsx";
 
 const Dashboard = () => {
   return (
@@ -11,12 +12,14 @@ const Dashboard = () => {
       
       <SideBar />
 
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col ">
         
         <TopBar />
 
         
-        <SmartGarden />
+        <SmartGarden  />
+
+        {/* <Chatbot2/> */}
       </div>
     </div>
   );
