@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS 
 import pickle
+from predictfertilizer import fert_recommend  # Import your fert_recommend function from predictfertilizer.py
+from predictdisease import predict_image 
 from sklearn.ensemble import RandomForestClassifier
 from google.generativeai import configure, GenerativeModel
 
@@ -20,7 +22,7 @@ generative_model = GenerativeModel('gemini-pro')
 def recommend():
     try:
         # Get input data from the POST request
-        input_data = request.json
+        input_data = request.json.get('data')
 
         # Ensure the input data has the expected number of features
         if len(input_data) != 7:
@@ -75,6 +77,47 @@ def plant_promt():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+
+@app.route('/predictfertilizer', methods=['POST'])
+def predict_fertilizer():
+    try:
+        # Assuming JSON payload like {"arr": ["rice", "80", "40", "30"]}
+        data = request.get_json()
+        arr = data.get('arr', [])
+
+        if not arr:
+            return jsonify({"error": "Invalid input format"}), 400
+
+        # Convert nutrient values to numeric types
+        crop = arr[0]
+        nitrogen = float(arr[1])
+        phosphorus = float(arr[2])
+        potassium = float(arr[3])
+
+        # Call the fert_recommend function with the converted values
+        result = fert_recommend([crop, nitrogen, phosphorus, potassium])
+
+        return jsonify({"result": result}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/predictdisease', methods=['POST'])
+def predict_disease():
+    try:
+        # Assuming the POST request contains an image file
+        file = request.files['image']
+        
+        if file:
+            image_data = file.read()
+            result = predict_image(img=image_data)
+            return jsonify({"result": result}), 200
+        else:
+            return jsonify({"error": "No image file provided"}), 400
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
