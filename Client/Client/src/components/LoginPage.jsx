@@ -1,11 +1,9 @@
-// LoginPage.jsx
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUserShield } from "react-icons/fa";
 import { BsShieldFillExclamation } from "react-icons/bs";
 import { AiOutlineSwapRight } from "react-icons/ai";
-
+import axios from "axios";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -15,22 +13,39 @@ const LoginPage = () => {
 
 
   const handleAdminLogin = () => {
-    setUsername("admin");
-    setPassword("admin");
+    setUsername("sanskar");
+    setPassword("2546kjbkjas");
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-    if (username === "admin" && password === "admin") {
-      setLoginStatus("Login successful. Redirecting to dashboard...");
-      setTimeout(() => {
-        window.location.href = "/dashboard";
-      }, 3000);
-    } else {
-      setLoginStatus("Invalid credentials. Please try again.");
-    }
-  };
+ 
+    
+   
+    const handleLogin = async (e) => {
+      e.preventDefault();
+      console.log(username);
+      try {
+        // Send a POST request to the backend "/login" endpoint
+        const response = await axios.post("http://localhost:3000/login", {
+          Username: username,
+          Password: password,
+        });
+        console.log(response);
+        // Check the response status and show appropriate message
+        if (response.status === 200) {
+          setLoginStatus("Login successful. Redirecting to dashboard...");
+          setTimeout(() => {
+            window.location.href = "/dashboard";
+          }, 3000);
+        } else {
+          setLoginStatus("Invalid credentials. Please try again.");
+        }
+      } catch (error) {
+        // Handle any errors that may occur during the request
+        console.error("Error during login:", error);
+        setLoginStatus("An error occurred during login. Please try again later.");
+      }
+    };
+  
 
   // bg-gradient-to-b from-green-700 via-green-300 to-green-100
   
@@ -80,7 +95,7 @@ const LoginPage = () => {
             <h3 className="text-2xl font-bold">Welcome Back!</h3>
           </div>
 
-          <form onSubmit={handleLogin} className="form grid gap-4">
+          <form className="form grid gap-4">
             <div className="flex items-center justify-center mb-2">
               <span className="text-red-600 text-sm text-nowrap ">
                 {loginStatus}
@@ -128,6 +143,7 @@ const LoginPage = () => {
 
             <button
               type="submit"
+              onClick={handleLogin}
               className="flex items-center justify-center h-10 bg-green-400 hover:bg-green-200 text-black rounded-xl mt-4"
             >
               <span>Login</span>
