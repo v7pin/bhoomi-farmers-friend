@@ -1,21 +1,27 @@
 // axios is assumed to be installed
 import axios from 'axios';
 
-const sendUserInputToBackend = async (userInput, selectedLanguage) => {
-  try {
-    // Replace 'http://127.0.0.1:5000/promt' with the actual endpoint of your backend
-    const response = await axios.post('http://127.0.0.1:5000/promt', {
-      query: userInput,
-      language: selectedLanguage,
-    });
-
-    // Assuming the backend returns the 'generatedText' property in the response
-    return response.data.output;
-  } catch (error) {
-    console.error('Error sending user input to the backend:', error);
-    // Handle error or return a default value
-    return 'An error occurred while processing the input.';
-  }
-};
+const sendUserInputToBackend = async (inputValue, selectedLanguage) => {
+    console.log(inputValue);
+    try {
+      
+      // generative_prompt = `${inputValue}  give info (write me the response in ${selectedLanguage} language, and the answer should not exceed 40 words)`;
+      const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyCOtJRo7AQS0Y7uy2tT0Hgl0KqzBQ11K-A'; // Replace with your API key
+      const response = await axios.post(apiUrl, {
+        "contents": [{"parts": [{"text": `${inputValue}  give info (write me the response in ${selectedLanguage} language, and the answer should not exceed 40 words)`}]}]
+      });
+      // generative_prompt = `${inputValue}  give info (write me the response in ${selectedLanguage} language, and the answer should not exceed 40 words)`;
+      const generatedTextParts = response.data.candidates[0].content.parts;
+  
+      // Extracting text from parts and joining them
+      const generatedText = generatedTextParts.map(part => part.text).join('\n');
+  
+      return generatedText;
+    } catch (error) {
+      console.error('Error generating content:', error);
+      // Handle error or return a default value
+      return 'An error occurred while generating content.';
+    
+}}
 
 export default sendUserInputToBackend;
